@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
+@theme {
+  --color-cyber-lime: #d4ff00;
+  --color-cyber-lime-hover: #bde600;
+  --color-cyber-lime-glow: rgba(212, 255, 0, 0.2);
+  --color-dark-bg: #0b0f19;
+  --color-dark-surface: #151b2d;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0b0f19;
+  --foreground: #f8fafc;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Panel Utility */
+.glass-panel {
+  background: rgba(21, 27, 45, 0.6);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Cyber Glow Shadow */
+.cyber-glow {
+  box-shadow: 0 0 15px rgba(212, 255, 0, 0.15);
+}
+
+.cyber-glow-hover:hover {
+  box-shadow: 0 0 25px rgba(212, 255, 0, 0.3);
+  border-color: rgba(212, 255, 0, 0.4);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Pulse animation for active ride states */
+@keyframes cyber-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+}
+
+.pulse-glow {
+  animation: cyber-pulse 2s infinite ease-in-out;
 }
