@@ -6,6 +6,8 @@
 create table if not exists public.users (
   id uuid references auth.users not null primary key,
   username text unique not null,
+  email text,
+  is_admin boolean default false not null,
   trust_score int default 100 not null check (trust_score >= 0 and trust_score <= 100),
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -25,10 +27,13 @@ create policy "Users can update their own profile"
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.users (id, username, trust_score)
+  insert into public.users (id, username, email, is_admin, trust_score)
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
+    new.email,
+    -- Make the first user or email matching 'admin' an admin by default
+    case when new.email like '%admin%' or not exists (select 1 from public.users) then true else false end,
     100
   )
   on conflict (id) do nothing;

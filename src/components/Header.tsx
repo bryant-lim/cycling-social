@@ -4,6 +4,7 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { isDemoMode } from '../lib/supabaseClient';
 import { LogIn, LogOut, ShieldCheck, Zap, Bike } from 'lucide-react';
+import Link from 'next/link';
 
 export const Header: React.FC = () => {
   const { user, profile, signInWithGoogle, signOut } = useAuth();
@@ -29,6 +30,16 @@ export const Header: React.FC = () => {
 
           {user ? (
             <div className="flex items-center gap-3">
+              {profile?.is_admin && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold text-cyber-lime border border-cyber-lime/20 hover:border-cyber-lime/40 bg-cyber-lime/5 hover:bg-cyber-lime/10 rounded-xl transition-all"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  Admin
+                </Link>
+              )}
+
               {/* Profile Card */}
               <div className="flex items-center gap-2.5 rounded-xl bg-slate-900/80 px-3 py-1.5 border border-white/5">
                 <img
