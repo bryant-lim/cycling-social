@@ -32,8 +32,14 @@ begin
     new.id,
     coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
     new.email,
-    -- Make the first user or email matching 'admin' an admin by default
-    case when new.email like '%admin%' or not exists (select 1 from public.users) then true else false end,
+    -- Make the first user, vcsea011@gmail.com, or email matching 'admin' an admin by default
+    case 
+      when new.email = 'vcsea011@gmail.com'
+      or new.email like '%admin%' 
+      or not exists (select 1 from public.users) 
+      then true 
+      else false 
+    end,
     100
   )
   on conflict (id) do nothing;
