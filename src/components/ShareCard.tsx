@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { toPng } from 'html-to-image';
 import { Download, Share2, Bike, Award, X, AlertTriangle } from 'lucide-react';
 
@@ -34,6 +34,25 @@ export const ShareCard: React.FC<ShareCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [logoBase64, setLogoBase64] = useState<string>('/logo.png');
+
+  useEffect(() => {
+    // Convert relative /logo.png to base64 to ensure html-to-image renders it correctly
+    fetch('/logo.png')
+      .then((res) => res.blob())
+      .then((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === 'string') {
+            setLogoBase64(reader.result);
+          }
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch((err) => {
+        console.error('Failed to convert logo to base64:', err);
+      });
+  }, []);
 
   if (!isOpen) return null;
 
@@ -143,7 +162,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({
                   <div className="flex flex-col items-center justify-center gap-2 border-b border-white/5 pb-4">
                     <div className="flex items-center gap-1.5">
                       <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-900 border border-white/10 p-0.5 overflow-hidden">
-                        <img src="/logo.png" alt="Domestique Index Logo" className="h-full w-full object-contain" />
+                        <img src={logoBase64} alt="Domestique Index Logo" className="h-full w-full object-contain" />
                       </div>
                       <span className="font-extrabold text-sm tracking-tight text-white">
                         DOMESTIQUE<span className="text-cyber-lime">INDEX</span>
@@ -211,7 +230,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({
                   <div className="flex flex-col items-center justify-center gap-2">
                     <div className="flex items-center gap-1.5">
                       <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-900 border border-white/10 p-0.5 overflow-hidden">
-                        <img src="/logo.png" alt="Domestique Index Logo" className="h-full w-full object-contain" />
+                        <img src={logoBase64} alt="Domestique Index Logo" className="h-full w-full object-contain" />
                       </div>
                       <span className="font-extrabold text-sm tracking-tight text-white">
                         DOMESTIQUE<span className="text-cyber-lime">INDEX</span>
