@@ -235,11 +235,8 @@ export default function AdminDashboard() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
             <div className="space-y-1.5">
               <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
-                Domestique Index Admin Dashboard
+                Admin Dashboard
               </h1>
-              <p className="text-slate-400 text-xs">
-                Platform-wide auditing telemetry, user registration indices, and ride consistency audits.
-              </p>
             </div>
             
             <div className="flex items-center gap-3">
@@ -397,7 +394,7 @@ export default function AdminDashboard() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <h3 className="font-extrabold text-sm text-slate-300 uppercase tracking-widest flex items-center gap-1.5">
                 <Users className="h-4 w-4 text-cyber-lime" />
-                Registered Riders Directory
+                Registered Riders
               </h3>
               
               {/* Search Bar Input */}
