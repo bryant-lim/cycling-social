@@ -142,7 +142,7 @@ export default function AdminDashboard() {
   const communityTotalLies = users.reduce((acc, curr) => acc + curr.liesCount, 0);
   const communityTotalTruths = users.reduce((acc, curr) => acc + curr.truthsCount, 0);
 
-  const isPageLoading = authLoading || (loadingData && profile?.is_admin);
+  const isPageLoading = authLoading || (loadingData && users.length === 0);
 
   return (
     <div className="min-h-screen bg-dark-bg flex flex-col">
@@ -234,9 +234,6 @@ export default function AdminDashboard() {
           {/* Admin Header Title Section */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
             <div className="space-y-1.5">
-              <span className="inline-block text-[9px] uppercase font-black tracking-widest text-cyber-lime bg-cyber-lime/10 px-2 py-0.5 rounded border border-cyber-lime/20">
-                Security clearance verified
-              </span>
               <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
                 Domestique Index Admin Dashboard
               </h1>
