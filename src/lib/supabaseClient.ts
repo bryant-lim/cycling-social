@@ -30,10 +30,62 @@ interface MockRide {
 interface MockUser {
   id: string;
   username: string;
+  email: string;
+  is_admin: boolean;
   trust_score: number;
+  created_at: string;
 }
 
 let mockUser: MockUser | null = null;
+
+const getInitialMockUsers = (): MockUser[] => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('domestique_index_demo_users');
+    if (stored) return JSON.parse(stored);
+  }
+  return [
+    {
+      id: 'user_1',
+      username: 'Bryant_Rides',
+      email: 'bryant@example.com',
+      is_admin: true,
+      trust_score: 85,
+      created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'user_2',
+      username: 'TadejPogacar',
+      email: 'tadej@uae.com',
+      is_admin: false,
+      trust_score: 95,
+      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'user_3',
+      username: 'WoutVanAert',
+      email: 'wout@visma.com',
+      is_admin: false,
+      trust_score: 60,
+      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'user_4',
+      username: 'FTP_Monster',
+      email: 'ftp_monster@zwift.com',
+      is_admin: false,
+      trust_score: 35,
+      created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'user_5',
+      username: 'CoffeeAssassin',
+      email: 'coffee_assassin@cafe.cc',
+      is_admin: false,
+      trust_score: 50,
+      created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    }
+  ];
+};
 
 const getInitialMockRides = (): MockRide[] => {
   if (typeof window !== 'undefined') {
@@ -41,8 +93,9 @@ const getInitialMockRides = (): MockRide[] => {
     if (stored) return JSON.parse(stored);
   }
   return [
+    // Bryant's rides
     {
-      id: '1',
+      id: 'r1',
       user_id: 'user_1',
       ride_title: 'Sunday Recovery Roll ☕',
       intended_intensity: 'chill',
@@ -55,7 +108,7 @@ const getInitialMockRides = (): MockRide[] => {
       completed_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '2',
+      id: 'r2',
       user_id: 'user_1',
       ride_title: 'Easy Coffee Ride',
       intended_intensity: 'chill',
@@ -66,6 +119,101 @@ const getInitialMockRides = (): MockRide[] => {
       result_type: 'trustworthy',
       created_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
       completed_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    // Tadej's rides
+    {
+      id: 'r3',
+      user_id: 'user_2',
+      ride_title: 'Zone 2 recovery spin',
+      intended_intensity: 'chill',
+      actual_intensity: 'chill',
+      notes: 'Recovery from Tour stages.',
+      summary: 'Rode Urska at 250W. Super chill.',
+      is_coffee_assassin_candidate: false,
+      result_type: 'trustworthy',
+      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'r4',
+      user_id: 'user_2',
+      ride_title: 'Mona Lisa attack day',
+      intended_intensity: 'hard',
+      actual_intensity: 'attacked',
+      notes: 'Going full gas on Cipressa.',
+      summary: 'Dropped everyone. Absolute blast.',
+      is_coffee_assassin_candidate: false,
+      result_type: 'neutral',
+      created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    // Wout's rides
+    {
+      id: 'r5',
+      user_id: 'user_3',
+      ride_title: 'Chill gravel spin',
+      intended_intensity: 'chill',
+      actual_intensity: 'spicy',
+      notes: 'Coffee ride only.',
+      summary: 'Average speed was 40km/h. Oops.',
+      is_coffee_assassin_candidate: false,
+      result_type: 'zone2_criminal',
+      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'r6',
+      user_id: 'user_3',
+      ride_title: 'Croissant loop',
+      intended_intensity: 'chill',
+      actual_intensity: 'lied',
+      notes: 'recovery ride.',
+      summary: 'I sprinted up every hill. I cannot resist.',
+      is_coffee_assassin_candidate: false,
+      result_type: 'liar',
+      created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    // FTP Monster's rides
+    {
+      id: 'r7',
+      user_id: 'user_4',
+      ride_title: 'Zone 2 coffee ride',
+      intended_intensity: 'chill',
+      actual_intensity: 'lied',
+      notes: 'No drop ride.',
+      summary: 'Dropped everyone immediately.',
+      is_coffee_assassin_candidate: true,
+      result_type: 'assassin',
+      created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'r8',
+      user_id: 'user_4',
+      ride_title: 'Active recovery',
+      intended_intensity: 'chill',
+      actual_intensity: 'spicy',
+      notes: 'Legs are dead.',
+      summary: 'Did 10 sprints at 1200W.',
+      is_coffee_assassin_candidate: false,
+      result_type: 'zone2_criminal',
+      created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    // Coffee Assassin's rides
+    {
+      id: 'r9',
+      user_id: 'user_5',
+      ride_title: 'Saturdays easy social',
+      intended_intensity: 'chill',
+      actual_intensity: 'lied',
+      notes: 'Strict zone 1.',
+      summary: 'Ripped the front of the peloton to shreds.',
+      is_coffee_assassin_candidate: true,
+      result_type: 'assassin',
+      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      completed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     }
   ];
 };
@@ -78,6 +226,7 @@ const getInitialMockBadges = (): string[] => {
   return ['trustworthy', 'zone2_criminal'];
 };
 
+let mockUsers: MockUser[] = getInitialMockUsers();
 let mockRides: MockRide[] = getInitialMockRides();
 let mockEarnedBadges: string[] = getInitialMockBadges();
 
@@ -85,6 +234,7 @@ const saveMockData = () => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('domestique_index_demo_rides', JSON.stringify(mockRides));
     localStorage.setItem('domestique_index_demo_badges', JSON.stringify(mockEarnedBadges));
+    localStorage.setItem('domestique_index_demo_users', JSON.stringify(mockUsers));
   }
 };
 
@@ -103,7 +253,7 @@ export const mockSupabase = {
           mockUser = JSON.parse(stored);
         }
       }
-      return { data: { user: mockUser ? { id: mockUser.id, email: `${mockUser.username.toLowerCase()}@example.com`, user_metadata: { full_name: mockUser.username, avatar_url: `https://api.dicebear.com/7.x/pixel-art/svg?seed=${mockUser.username}` } } : null }, error: null };
+      return { data: { user: mockUser ? { id: mockUser.id, email: mockUser.email, user_metadata: { full_name: mockUser.username, avatar_url: `https://api.dicebear.com/7.x/pixel-art/svg?seed=${mockUser.username}` } } : null }, error: null };
     },
     signInWithOAuth: async () => {
       const demoNames = ['WoutVanAert', 'TadejPogacar', 'GravelGrinder', 'SprinterSam', 'FTP_Monster'];
@@ -111,10 +261,21 @@ export const mockSupabase = {
       mockUser = {
         id: 'demo_user_id_' + Math.random(),
         username: randomName,
+        email: `${randomName.toLowerCase()}@example.com`,
+        is_admin: true, // Make admin default for simple local demo mode verification
         trust_score: 82,
+        created_at: new Date().toISOString(),
       };
       if (typeof window !== 'undefined') {
         localStorage.setItem('domestique_index_demo_user', JSON.stringify(mockUser));
+        
+        // Also register this user in the public mock users list
+        const storedUsers = localStorage.getItem('domestique_index_demo_users');
+        const usersList: MockUser[] = storedUsers ? JSON.parse(storedUsers) : [...mockUsers];
+        if (!usersList.some(u => u.id === mockUser?.id)) {
+          usersList.push(mockUser);
+          localStorage.setItem('domestique_index_demo_users', JSON.stringify(usersList));
+        }
       }
       window.location.reload();
       return { data: null, error: null };
@@ -133,7 +294,7 @@ export const mockSupabase = {
         const stored = localStorage.getItem('domestique_index_demo_user');
         if (stored) {
           const user = JSON.parse(stored);
-          callback('SIGNED_IN', { user: { id: user.id, email: `${user.username}@example.com`, user_metadata: { full_name: user.username } } });
+          callback('SIGNED_IN', { user: { id: user.id, email: user.email, user_metadata: { full_name: user.username } } });
         } else {
           callback('SIGNED_OUT', null);
         }
@@ -149,13 +310,20 @@ export const mockSupabase = {
             return {
               single: async () => {
                 if (table === 'users') {
+                  const storedUsers = typeof window !== 'undefined' ? localStorage.getItem('domestique_index_demo_users') : null;
+                  const list: MockUser[] = storedUsers ? JSON.parse(storedUsers) : mockUsers;
+                  const matched = list.find(u => u.id === value);
+                  if (matched) {
+                    return { data: matched, error: null };
+                  }
+                  
                   const stored = typeof window !== 'undefined' ? localStorage.getItem('domestique_index_demo_user') : null;
                   const currentU = stored ? JSON.parse(stored) : mockUser;
                   if (currentU && currentU.id === value) {
                     return { data: currentU, error: null };
                   }
                   // Fallback for public profile lookup
-                  return { data: { id: value, username: 'PelotonLegend', trust_score: 65 }, error: null };
+                  return { data: { id: value, username: 'PelotonLegend', email: 'legend@peloton.com', is_admin: false, trust_score: 65, created_at: new Date().toISOString() }, error: null };
                 }
                 return { data: null, error: { message: 'Not found' } };
               },
@@ -163,7 +331,7 @@ export const mockSupabase = {
                 return {
                   then: async (resolve: any) => {
                     if (table === 'rides') {
-                      let list = [...mockRides];
+                      let list = mockRides.filter(r => r.user_id === value);
                       list.sort((a, b) => ascending ? a.created_at.localeCompare(b.created_at) : b.created_at.localeCompare(a.created_at));
                       resolve({ data: list, error: null });
                     } else if (table === 'user_badges') {
@@ -191,6 +359,10 @@ export const mockSupabase = {
               });
             } else if (table === 'rides') {
               resolve({ data: mockRides, error: null });
+            } else if (table === 'users') {
+              const storedUsers = typeof window !== 'undefined' ? localStorage.getItem('domestique_index_demo_users') : null;
+              const list = storedUsers ? JSON.parse(storedUsers) : mockUsers;
+              resolve({ data: list, error: null });
             } else {
               resolve({ data: [], error: null });
             }

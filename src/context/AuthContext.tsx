@@ -6,6 +6,8 @@ import { supabase, mockSupabase, isDemoMode } from '../lib/supabaseClient';
 interface UserProfile {
   id: string;
   username: string;
+  email?: string;
+  is_admin?: boolean;
   trust_score: number;
   created_at?: string;
 }
